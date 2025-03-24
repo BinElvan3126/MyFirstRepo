@@ -1,13 +1,14 @@
 #include <iostream>
-
-int factorial(int n)
+using namespace std;
+long long factorial(int n)
 {
     if (n <= 0)
         return 1;
     return n * factorial(n - 1);
+    // Tổng quát s(n) = s(n - 1) * n
 }
 int main()
 {
-    std::cout << factorial(5) << std::endl;
+    cout << factorial(5) << endl;
     return 0;
 }
