@@ -9,6 +9,8 @@ long long factorial(int n)
 }
 int main()
 {
-    cout << factorial(5) << endl;
+    int n;
+    cin >> n;
+    cout << factorial(n) << endl;
     return 0;
 }

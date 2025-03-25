@@ -13,8 +13,9 @@ void tower(int n, char from_rod, char to_rod, char aux_rod)
     tower(n - 1, aux_rod, to_rod, from_rod); // lấy về lại
 }
 int main() 
-{
-    int n = 5;
+{ 
+    int n;
+    cin >> n;
     tower(n, 'A', 'B', 'C');
     return 0;
 }

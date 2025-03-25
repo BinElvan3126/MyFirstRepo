@@ -1,25 +1,18 @@
 #include <iostream>
 using namespace std;
 
-void fibonacci(int n, int a = 0, int b = 1) 
+int fibonacci(int n) 
 {
-    if (n == 0 ) {
-        cout << a;
-        return;
-    }
-    if (n > 0) {
-        cout << a << " ";
-        fibonacci(n - 1, b, a + b);
-    }
-    // Sử dụng tham số a và b để khởi tạo dã fibonacci
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 int main()
 {
-    fibonacci(0);
-    cout << endl;
-    fibonacci(1);
-    cout << endl;
-    fibonacci(5);
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cout << fibonacci(i) << " ";
+    }
     return 0;
 }

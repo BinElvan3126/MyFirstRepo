@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const int N = 5;
+const int N = 8;
 int board[N][N] = {0};
 int solutions = 0;
 // Bài toán n quân hậu

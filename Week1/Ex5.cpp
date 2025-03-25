@@ -17,8 +17,12 @@ bool isSorted(int arr[], int n)
 
 int main() 
 {
-    int arr[] = {1, 2, 3, 4, 5}; 
-    int n = sizeof(arr) / sizeof(arr[0]);
+    int n;
+    cin >> n;
+    int arr[n] = {}; 
+    for (int i = 0; i< n; i++) {
+        cin >> arr[i];
+    }
 
     if (isSorted(arr, n))
         cout << "The array is sorted.\n";

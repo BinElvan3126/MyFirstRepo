@@ -3,7 +3,7 @@ using namespace std;
 
 void generateBinaryStrings(int n, string str) 
 {
-    // Nếu độ dài chuỗi hiện tại bằng n
+    // Nếu độ dài chuỗi hiện tại bằng n thì in kết quả
     if (n == str.size()) 
     {
         cout << str << endl;
@@ -21,7 +21,9 @@ void generateBinaryStrings(int n, string str)
 
 int main() 
 {
+    int n;
+    cin >> n;
     string s;
-    generateBinaryStrings(3, s);
+    generateBinaryStrings(n, s);
     return 0;
 }
