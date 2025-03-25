@@ -2,7 +2,7 @@
 using namespace std;
 long long factorial(int n)
 {
-    if (n <= 0)
+    if (n <= 1)
         return 1;
     return n * factorial(n - 1);
     // Tổng quát s(n) = s(n - 1) * n
