@@ -3,6 +3,10 @@ using namespace std;
 
 void fibonacci(int n, int a = 0, int b = 1) 
 {
+    if (n == 0 ) {
+        cout << a;
+        return;
+    }
     if (n > 0) {
         cout << a << " ";
         fibonacci(n - 1, b, a + b);
