@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 int linearSearch(int a[], int n, int k)
 {
     int idx;
@@ -13,14 +15,14 @@ int linearSearch(int a[], int n, int k)
 int main()
 {
     int n;
-    std::cin >> n;
+    cin >> n;
     int a[n];
     for (int i = 0; i < n; i++)
     {
-        std::cin >> a[i];
+        cin >> a[i];
     }
     int k;
-    std::cin >> k;
-    std::cout << "Index of K in array: " << linearSearch(a, n, k) << std::endl;
+    cin >> k;
+    cout << "Index of K in array: " << linearSearch(a, n, k) << endl;
     return 0;
 }

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int findMin(int arr[], int n)
+int findIdxMin(int arr[], int n)
 {
     int low = 0, high = n - 1;
     while (low < high)
@@ -17,15 +17,20 @@ int findMin(int arr[], int n)
             high = mid;
         }
     }
-    return arr[low];
+    return low;
 }
 
 int main()
 {
-    int nums[] = {4, 5, 6, 7, 0, 1, 2};
-    int n = sizeof(nums) / sizeof(nums[0]);
+    int n;
+    cin >> n;
+    int a[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
 
-    cout << "Minimum element in array: " << findMin(nums, n) << endl;
+    cout << "The array is rotated " << findIdxMin(a, n) << " time" << endl;
 
     return 0;
 }
