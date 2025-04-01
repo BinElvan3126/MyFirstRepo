@@ -30,7 +30,7 @@ int main()
         cin >> a[i];
     }
 
-    cout << "The array is rotated " << findIdxMin(a, n) << " time" << endl;
+    cout << "Min: " << a[findIdxMin(a, n)] << endl;
 
     return 0;
 }
