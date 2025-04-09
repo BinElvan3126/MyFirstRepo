@@ -78,20 +78,36 @@ void freeList(List *L)
 
 NODE *createNode(int data)
 {
-    // Your code here //
-    return nullptr; // Placeholder return statement
+    NODE *p = new NODE;
+    p->key = data;
+    p->p_next = NULL;
+    return p;
 }
 
 List *createList(NODE *p_node)
 {
-    // Your code here //
-    return nullptr; // Placeholder return statement
+    List *list = new List;
+    list->p_head = p_node;
+    list->p_tail = p_node;
+
+    return list;
 }
 
 bool addHead(List *&L, int data)
 {
-    // Your code here //
-    return false;
+    if (L->p_head == nullptr)
+    {
+        NODE *p = createNode(data);
+        L->p_head = p;
+        L->p_tail = p;
+    }
+    else
+    {
+        NODE *p = createNode(data);
+        p->p_next = L->p_head;
+        L->p_head = p;
+    }
+    return true;
 }
 
 bool addTail(List *&L, int data) // this function is kept for createListfromArray function
