@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+using namespace std;
 struct NODE
 {
     int key;
@@ -80,7 +81,7 @@ NODE *createNode(int data)
 {
     NODE *p = new NODE;
     p->key = data;
-    p->p_next = NULL;
+    p->p_next = nullptr;
     return p;
 }
 
@@ -89,20 +90,17 @@ List *createList(NODE *p_node)
     List *list = new List;
     list->p_head = p_node;
     list->p_tail = p_node;
-
     return list;
 }
 
 bool addHead(List *&L, int data)
 {
-    if (L->p_head == nullptr)
-    {
+    if (L->p_head == nullptr) {
         NODE *p = createNode(data);
         L->p_head = p;
         L->p_tail = p;
     }
-    else
-    {
+    else {
         NODE *p = createNode(data);
         p->p_next = L->p_head;
         L->p_head = p;
@@ -110,16 +108,14 @@ bool addHead(List *&L, int data)
     return true;
 }
 
-bool addTail(List *&L, int data) // this function is kept for createListfromArray function
+bool addTail(List *&L, int data)
 {
     NODE *newNode = createNode(data);
-    if (L->p_head == nullptr)
-    {
+    if (L->p_head == nullptr) {
         L->p_head = newNode;
         L->p_tail = newNode;
     }
-    else
-    {
+    else {
         L->p_tail->p_next = newNode;
         L->p_tail = newNode;
     }
@@ -128,92 +124,225 @@ bool addTail(List *&L, int data) // this function is kept for createListfromArra
 
 bool removeHead(List *&L)
 {
-    // Your code here //
-    return false;
-}
+    if (L->p_head == nullptr) return false;
 
+    NODE* tmp = L->p_head;
+    L->p_head = L->p_head->p_next;
+    delete tmp;
+    if (L->p_head == nullptr) L->p_tail = nullptr;
+    return true;
+}
 void removeTail(List *&L)
 {
-    // Your code here //
-    return;
+    if (L->p_head == nullptr) return;
+    if (L->p_head == L->p_tail) {
+        delete L->p_head;
+        L->p_head = nullptr;
+        L->p_tail = nullptr;
+        return;
+    }
+
+    NODE* store = L->p_head;
+    while (store->p_next != L->p_tail) store = store->p_next;
+    delete L->p_tail;
+    L->p_tail = store;
+    L->p_tail->p_next = nullptr;
 }
 
 void removeAll(List *&L)
 {
-    // Your code here //
-    return;
+    while (L->p_head != nullptr) removeHead(L);
 }
 
-// Remove a node before a given value in the list if it exists, otherwise do nothing
 void removeBefore(List *&L, int val)
 {
-    // Your code here //
-    return;
+    if (L->p_head == nullptr || L->p_head->p_next == nullptr) return;
+    if (L->p_head->p_next->key == val) {
+        removeHead(L);
+        return;
+    }
+
+    NODE* prev1 = nullptr;
+    NODE* prev2 = L->p_head;
+    NODE* cur = L->p_head->p_next;
+    while (cur != nullptr && cur->p_next != nullptr) {
+        if (cur->p_next->key == val) {
+            NODE* tmp = prev2->p_next;
+            prev2->p_next = cur->p_next;
+            delete tmp;
+            return;
+        }
+        prev1 = prev2;
+        prev2 = cur;
+        cur = cur->p_next;
+    }
 }
 
 void removeAfter(List *&L, int val)
 {
-    // Your code here //
-    return;
+    NODE* cur = L->p_head;
+    while (cur != nullptr) {
+        if (cur->key == val && cur->p_next != nullptr) {
+            NODE* tmp = cur->p_next;
+            cur->p_next = tmp->p_next;
+            if (tmp == L->p_tail) L->p_tail = cur;
+            delete tmp;
+            return;
+        }
+        cur = cur->p_next;
+    }
 }
 
 bool addPos(List *&L, int data, int pos)
 {
-    // Your code here //
-    return false;
+    if (pos < 0) return false;
+    if (pos == 0) {
+        addHead(L, data);
+        return true;
+    }
+    
+    NODE* cur = L->p_head;
+    int count = 0;
+    while (cur != nullptr && count < pos - 1) {
+        cur = cur->p_next;
+        count++;
+    }
+    if (cur == nullptr) return false;
+
+    NODE* p = createNode(data);
+    p->p_next = cur->p_next;
+    cur->p_next = p;
+    if (p->p_next == nullptr) L->p_tail = p; 
+    return true;
 }
 
 void removePos(List *&L, int data, int pos)
 {
-    // Your code here //
-    return;
+    if (pos < 0 || L->p_head == nullptr) return;
+    if (pos == 0) {
+        removeHead(L);
+        return;
+    }
+    NODE* prev = L->p_head;
+    int count = 0;
+    while (prev != nullptr && count < pos - 1) {
+        prev = prev->p_next;
+        count++;
+    }
+    if (prev == nullptr || prev->p_next == nullptr) return;
+
+    NODE* tmp = prev->p_next;
+    prev->p_next = tmp->p_next;
+    if (tmp == L->p_tail) L->p_tail = prev;
+    delete tmp;
 }
 
-// Insert an integer before a value of a given List:
 bool addBefore(List *&L, int data, int val)
 {
-    // Your code here //
-    return false;
+    if (L->p_head == nullptr) return false;
+    if (L->p_head->key == val) {
+        addHead(L, data);
+        return true;
+    }
+
+    NODE* prev = L->p_head;
+    while (prev->p_next != nullptr && prev->p_next->key != val) {
+        prev = prev->p_next;
+    }
+    if (prev->p_next == nullptr) return false;
+
+    NODE* p = createNode(data);
+    p->p_next = prev->p_next;
+    prev->p_next = p;
+    return true;
 }
 
 bool addAfter(List *&L, int data, int val)
 {
-    // Your code here //
-    return false;
+    NODE* cur = L->p_head;
+    while (cur != nullptr && cur->key != val) cur = cur->p_next;
+    if (cur == nullptr) return false;
+
+    NODE* p = createNode(data);
+    p->p_next = cur->p_next;
+    cur->p_next = p;
+    if (p->p_next == nullptr) L->p_tail = p;
+    return true;
 }
 
 void printList(List *L)
 {
-    // Your code here //
-    return;
+    NODE* cur = L->p_head;
+    while (cur != nullptr) {
+        cout << cur->key << " ";
+        cur = cur->p_next;
+    }
+    cout << endl;
 }
 
 int countElements(List *L)
 {
-    // Your code here //
-    return 0;
+    int count = 0;
+    NODE* cur = L->p_head;
+    while (cur != nullptr) {
+        count++;
+        cur = cur->p_next;
+    }
+    return count;
 }
 
 List *reverseList(List *L)
 {
-    // Your code here //
-    return nullptr;
+    List* rs = new List();
+    NODE* cur = L->p_head;
+    
+    while (cur != nullptr) {
+        addHead(rs, cur->key);
+        cur = cur->p_next;
+    }
+    return rs;
 }
 
 void removeDuplicate(List *&L)
 {
-    // Your code here //
-    return;
+    if (L->p_head == nullptr) return;
+    
+    NODE* cur = L->p_head;
+    while (cur != nullptr) {
+        NODE* start = cur;
+        while (start->p_next != nullptr) {
+            if (start->p_next->key == cur->key) {
+                NODE* tmp = start->p_next;
+                start->p_next = tmp->p_next;
+                if (tmp == L->p_tail) L->p_tail = start;
+                delete tmp;
+            }
+            else start = start->p_next;
+        }
+        cur = cur->p_next;
+    }
 }
 
 bool removeElement(List *&L, int key)
 {
-    // Your code here //
-    return false;
+    if (L->p_head == nullptr) return false;
+    if (L->p_head->key == key) {
+        removeHead(L);
+        return true;
+    }
+
+    NODE* prev = L->p_head;
+    while (prev->p_next != nullptr && prev->p_next->key != key) prev = prev->p_next;
+    if (prev->p_next == nullptr) return false;
+
+    NODE* tmp = prev->p_next;
+    prev->p_next = tmp->p_next;
+    if (tmp == L->p_tail) L->p_tail = prev;
+    delete tmp;
+    return true;
 }
 
 // --- Function main to test the above functions ---
-
 int main()
 {
     std::cout << "--- Begin running test cases ---" << std::endl;
