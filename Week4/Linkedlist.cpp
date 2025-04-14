@@ -142,10 +142,10 @@ void removeTail(List *&L)
         return;
     }
 
-    NODE* store = L->p_head;
-    while (store->p_next != L->p_tail) store = store->p_next;
+    NODE* cur = L->p_head;
+    while (cur->p_next != L->p_tail) cur = cur->p_next;
     delete L->p_tail;
-    L->p_tail = store;
+    L->p_tail = cur;
     L->p_tail->p_next = nullptr;
 }
 
@@ -162,18 +162,16 @@ void removeBefore(List *&L, int val)
         return;
     }
 
-    NODE* prev1 = nullptr;
-    NODE* prev2 = L->p_head;
+    NODE* prev = L->p_head;
     NODE* cur = L->p_head->p_next;
     while (cur != nullptr && cur->p_next != nullptr) {
         if (cur->p_next->key == val) {
-            NODE* tmp = prev2->p_next;
-            prev2->p_next = cur->p_next;
+            NODE* tmp = prev->p_next;
+            prev->p_next = cur->p_next;
             delete tmp;
             return;
         }
-        prev1 = prev2;
-        prev2 = cur;
+        prev = cur;
         cur = cur->p_next;
     }
 }

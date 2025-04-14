@@ -130,7 +130,7 @@ bool removeHead(List *&L)
     NODE *tmp = L->p_head;
     L->p_head = L->p_head->p_next;
 
-    if (L->p_head) L->p_head->p_prev = nullptr;
+    if (L->p_head != nullptr) L->p_head->p_prev = nullptr;
     else L->p_tail = nullptr;
     delete tmp;
     return true;
@@ -164,9 +164,8 @@ void removeBefore(List *&L, int val)
     while (cur != nullptr) {
         if (cur->key == val && cur->p_prev != nullptr) {
             NODE *tmp = cur->p_prev;
-            if (tmp->p_prev) tmp->p_prev->p_next = cur;
+            if (tmp->p_prev != nullptr) tmp->p_prev->p_next = cur;
             else L->p_head = cur;
-
             cur->p_prev = tmp->p_prev;
             delete tmp;
             return;
@@ -182,8 +181,7 @@ void removeAfter(List *&L, int val)
         if (cur->key == val && cur->p_next != nullptr) {
             NODE *tmp = cur->p_next;
             cur->p_next = tmp->p_next;
-
-            if (tmp->p_next) tmp->p_next->p_prev = cur;
+            if (tmp->p_next != nullptr) tmp->p_next->p_prev = cur;
             else L->p_tail = cur;
             delete tmp;
             return;
@@ -212,7 +210,7 @@ bool addPos(List *&L, int data, int pos)
     p->p_next = cur->p_next;
     p->p_prev = cur;
 
-    if (cur->p_next) cur->p_next->p_prev = p;
+    if (cur->p_next != nullptr) cur->p_next->p_prev = p;
     else L->p_tail = p;
     cur->p_next = p;
     return true;
@@ -232,24 +230,24 @@ void removePos(List *&L, int data, int pos)
         cur = cur->p_next;
         count++;
     }
-    if (cur == nullptr) return;
+    if (cur == nullptr)return;
 
-    if (cur->p_prev) cur->p_prev->p_next = cur->p_next;
-    if (cur->p_next) cur->p_next->p_prev = cur->p_prev;
+    if (cur->p_prev != nullptr) cur->p_prev->p_next = cur->p_next;
+    if (cur->p_next != nullptr) cur->p_next->p_prev = cur->p_prev;
     if (cur == L->p_tail) L->p_tail = cur->p_prev;
     delete cur;
 }
 
 bool addBefore(List *&L, int data, int val)
 {
-    if (L->p_head == nullptr) return false;
+    if (L->p_head == nullptr)return false;
     if (L->p_head->key == val) {
         addHead(L, data);
         return true;
     }
 
     NODE *cur = L->p_head;
-    while (cur != nullptr && cur->key != val) cur = cur->p_next;
+    while (cur != nullptr && cur->key != val)cur = cur->p_next;
     if (cur == nullptr) return false;
 
     NODE *p = createNode(data);
@@ -270,7 +268,7 @@ bool addAfter(List *&L, int data, int val)
     p->p_next = cur->p_next;
     p->p_prev = cur;
 
-    if (cur->p_next) cur->p_next->p_prev = p;
+    if (cur->p_next)cur->p_next->p_prev = p;
     else L->p_tail = p;
     cur->p_next = p;
     return true;
@@ -290,7 +288,7 @@ int countElements(List *L)
 {
     int count = 0;
     NODE *cur = L->p_head;
-    while (cur != nullptr) {
+    while (cur != nullptr){
         count++;
         cur = cur->p_next;
     }
@@ -315,17 +313,17 @@ void removeDuplicate(List *&L)
 
     NODE *cur = L->p_head;
     while (cur != nullptr) {
-        NODE *runner = cur->p_next;
-        while (runner != nullptr){
-            if (runner->key == cur->key){
-                NODE *tmp = runner;
-                runner = runner->p_next;
-                if (tmp->p_prev) tmp->p_prev->p_next = tmp->p_next;
-                if (tmp->p_next) tmp->p_next->p_prev = tmp->p_prev;
+        NODE *run = cur->p_next;
+        while (run != nullptr) {
+            if (run->key == cur->key) {
+                NODE *tmp = run;
+                run = run->p_next;
+                if (tmp->p_prev != nullptr) tmp->p_prev->p_next = tmp->p_next;
+                if (tmp->p_next != nullptr) tmp->p_next->p_prev = tmp->p_prev;
                 if (tmp == L->p_tail) L->p_tail = tmp->p_prev;
                 delete tmp;
             }
-            else runner = runner->p_next;
+            else run = run->p_next;
         }
         cur = cur->p_next;
     }
@@ -339,8 +337,8 @@ bool removeElement(List *&L, int key)
     while (cur != nullptr && cur->key != key) cur = cur->p_next;
     if (cur == nullptr) return false;
 
-    if (cur->p_prev) cur->p_prev->p_next = cur->p_next;
-    if (cur->p_next) cur->p_next->p_prev = cur->p_prev;
+    if (cur->p_prev != nullptr) cur->p_prev->p_next = cur->p_next;
+    if (cur->p_next != nullptr) cur->p_next->p_prev = cur->p_prev;
     if (cur == L->p_head) L->p_head = cur->p_next;
     if (cur == L->p_tail) L->p_tail = cur->p_prev;
     delete cur;
