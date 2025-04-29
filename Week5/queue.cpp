@@ -1,3 +1,4 @@
+// 24120036 - Le Van Thanh Dat
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -82,7 +83,6 @@ void check(const string& command, Queue* q, ofstream& outFile) {
 void readFromFile(const string& input, const string& output, Queue* q) {
     ifstream inFile(input);
     ofstream outFile(output);
-
     if (!inFile.is_open()) {
         cout << "Can't open " << input << endl;
         return;
@@ -91,12 +91,10 @@ void readFromFile(const string& input, const string& output, Queue* q) {
         cout << "Can't open " << output << endl;
         return;
     }
-
     string line;
     while (getline(inFile, line)) {
         check(line, q, outFile);
     }
-
     inFile.close();
     outFile.close();
 }
