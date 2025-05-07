@@ -1,0 +1,162 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+using namespace std;
+
+const int TABLE_SIZE = 2000;
+const int P = 31;
+const int M = 1e9 + 9;
+
+struct Company
+{
+    string name;
+    string profit_tax;
+    string address;
+};
+
+struct HashTable
+{
+    Company *table[TABLE_SIZE];
+    bool used[TABLE_SIZE];
+
+    HashTable()
+    {
+        for (int i = 0; i < TABLE_SIZE; i++)
+        {
+            table[i] = nullptr;
+            used[i] = false;
+        }
+    }
+};
+
+long long hashString(const string &company_name)
+{
+    string s = company_name;
+    if (s.length() > 20)
+        s = s.substr(s.length() - 20);
+
+    long long hash_value = 0;
+    long long p_pow = 1;
+
+    for (char c : s)
+    {
+        hash_value = (hash_value + (c * p_pow) % M) % M;
+        p_pow = (p_pow * P) % M;
+    }
+
+    return hash_value;
+}
+
+void insert(HashTable *hash_table, const Company &company)
+{
+    long long index = hashString(company.name) % TABLE_SIZE;
+
+    while (hash_table->used[index] && hash_table->table[index] != nullptr &&
+           hash_table->table[index]->name != company.name)
+    {
+        index = (index + 1) % TABLE_SIZE;
+    }
+
+    if (!hash_table->used[index] || hash_table->table[index] == nullptr)
+    {
+        hash_table->table[index] = new Company(company);
+        hash_table->used[index] = true;
+    }
+}
+
+Company *search(HashTable *hash_table, const string &name)
+{
+    long long index = hashString(name) % TABLE_SIZE;
+    int start = index;
+
+    while (hash_table->used[index])
+    {
+        if (hash_table->table[index] != nullptr &&
+            hash_table->table[index]->name == name)
+        {
+            return hash_table->table[index];
+        }
+
+        index = (index + 1) % TABLE_SIZE;
+        if (index == start)
+            break; // Full loop
+    }
+
+    return nullptr;
+}
+
+HashTable *createHashTable(const vector<Company> &list_company)
+{
+    HashTable *hash_table = new HashTable();
+    for (const auto &company : list_company)
+    {
+        insert(hash_table, company);
+    }
+    return hash_table;
+}
+
+vector<Company> readCompanyList(const string &file_name)
+{
+    ifstream infile(file_name);
+    vector<Company> companies;
+
+    if (!infile)
+    {
+        cerr << "Cannot open file " << file_name << "\n";
+        return companies;
+    }
+
+    string line;
+    getline(infile, line); // Skip header
+
+    while (getline(infile, line))
+    {
+        stringstream ss(line);
+        string name, tax, address;
+        getline(ss, name, '|');
+        getline(ss, tax, '|');
+        getline(ss, address);
+        companies.push_back({name, tax, address});
+    }
+
+    return companies;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc != 4)
+    {
+        cerr << "Usage: ./main MST.txt input.txt output.txt\n";
+        return 1;
+    }
+
+    string mst_file = argv[1];
+    string input_file = argv[2];
+    string output_file = argv[3];
+
+    vector<Company> companyList = readCompanyList(mst_file);
+    HashTable *hash_table = createHashTable(companyList);
+
+    ifstream input(input_file);
+    ofstream output(output_file);
+
+    if (!input || !output)
+    {
+        cerr << "Cannot open input/output file.\n";
+        return 1;
+    }
+
+    string company_name;
+    while (getline(input, company_name))
+    {
+        Company *result = search(hash_table, company_name);
+        if (result != nullptr)
+        {
+            output << result->name << "|" << result->profit_tax << "|" << result->address << "\n";
+        }
+    }
+
+    return 0;
+}
