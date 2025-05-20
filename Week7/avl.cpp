@@ -24,23 +24,23 @@ int balance(NODE* pNode) {
     if (pNode == nullptr) return 0;
     return height(pNode->p_left) - height(pNode->p_right);
 }
-NODE* rightRotate(NODE* right) {
-    NODE* left = right->p_left;
-    NODE* T2 = left->p_right;
-    left->p_right = right;
-    right->p_left = T2;
-    right->height = 1 + max(height(right->p_left), height(right->p_right));
-    left->height = 1 + max(height(left->p_left), height(left->p_right));
-    return left;
+NODE* rightRotate(NODE* y) {
+    NODE* x = y->p_left;
+    NODE* T2 = x->p_right;
+    x->p_right = y;
+    y->p_left = T2;
+    y->height = 1 + max(height(y->p_left), height(y->p_right));
+    x->height = 1 + max(height(x->p_left), height(x->p_right));
+    return x;
 }
-NODE* leftRotate(NODE* left) {
-    NODE* right = left->p_right;
-    NODE* T2 = right->p_left;
-    right->p_left = left;
-    left->p_right = T2;
-    left->height = 1 + max(height(left->p_left), height(left->p_right));
-    right->height = 1 + max(height(right->p_left), height(right->p_right));
-    return right;
+NODE* leftRotate(NODE* x) {
+    NODE* y = x->p_right;
+    NODE* T2 = y->p_left;
+    y->p_left = x;
+    x->p_right = T2;
+    x->height = 1 + max(height(x->p_left), height(x->p_right));
+    y->height = 1 + max(height(y->p_left), height(y->p_right));
+    return y;
 }
 void Insert(NODE*& pRoot, int x) {
     if (pRoot == nullptr) {
